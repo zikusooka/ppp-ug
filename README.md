@@ -30,4 +30,6 @@ For example:
 $HOME/dial-script orange user pass 1
 
 
+Contribution:
+This is a work in progress, so contributions are very much welcome
 Enjoy!
