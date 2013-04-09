@@ -537,13 +537,13 @@ echo "`date +"%b %d at %I:%M:%S"` (Attempt #$PPPD_RUN)
 Error: $PPP_ERROR_MSG"
 
 # Notify that network is NOT available
-if [ "x$AVAILABLE_NETWORK" = "x" ];
+if [ "x$AVAILABLE_NETWORK" = "x" ] && [ "$PPPD_RUN" = "2" ];
 then
 echo "`date +"%b %d at %I:%M:%S"`
 ---
 Error: There's no $ISP network available, please try another network type
 "
-#exit 1
+exit 1
 
 fi
 
