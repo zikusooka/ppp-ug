@@ -25,12 +25,14 @@ Usage:
 
 1) Copy the pppd-ug directory in your home directory
 2) run program (as root user):
-  $HOME/dial-script.sh [ISP] [username] [password] [connection type]
+sudo $HOME/dial-script.sh [ISP] [username] [password] [connection type]
 For example:
-$HOME/dial-script orange user pass 1
+sudo HOME/dial-script orange user pass 1
 
+3) To terminate connection:
+sudo Killall pppd
 
 Contribution:
-This is a work in progress, so contributions are very much welcome
+This is a work in progress, so contributions/BUGs are very much welcome
 
 Enjoy!
