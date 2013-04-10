@@ -566,22 +566,6 @@ done
 
 # CONNECTED
 # ---------
-# Check status of ppp device
-ifconfig $PPP_INTERFACE > /dev/null 2>&1
-PPP_DEV_ACTIVE=`echo $?`
-# Wait until PPP Device is active to proceed to iptables masquerading rules
-until [ "$PPP_DEV_ACTIVE" = "0" ]
-do
-echo "Waiting for $PPP_INTERFACE to be activated"
-sleep 1
-ifconfig $PPP_INTERFACE > /dev/null 2>&1
-PPP_DEV_ACTIVE=`echo $?`
-done
-
-
-# Connection succeeded - alert
-mplayer /usr/share/sounds/KDE_Startup_2.ogg > /dev/null 2>&1
-
 
 # QUERY Modem when in On-Line state
 # ---------------------------------
