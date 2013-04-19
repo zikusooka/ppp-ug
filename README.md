@@ -9,7 +9,7 @@
 Introduction:
 
 PPP-UG is a command line utility that can be used to connect to the
-Internet via mobile ISPs based in Uganda.  Tested networks include: Orange and UTL.  Other networks like MTN, Warid, and Zain should also work with little or no modifications.
+Internet via mobile ISPs based in Uganda.  Tested networks include: Orange and UTL.  Other networks like MTN, Warid, and Airtel should also work with little or no modifications.
 
 PPP-UG is a collection of bash scripts which primarily take advantage of the linux program pppd and chat to dial the ISP.
 
@@ -37,7 +37,8 @@ For example:
 sudo HOME/dial-script orange user pass 1
 
 3) To terminate connection:
-sudo Killall pppd
+
+sudo killall pppd
 
 Contribution:
 
