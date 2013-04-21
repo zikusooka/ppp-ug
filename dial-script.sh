@@ -154,7 +154,7 @@ fi
 
 # Dig Host
 dig_host () {
-host $REMOTE_DOMAIN_NAME > /dev/null 2>&1
+host -W 2 $REMOTE_DOMAIN_NAME $DNS1 > /dev/null 2>&1
 STATUS=$?
 }
 
