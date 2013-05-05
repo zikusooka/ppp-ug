@@ -344,8 +344,7 @@ ps acx | grep pppd > /dev/null || killall -9 pppd > /dev/null 2>&1
 [ ! -f "$MODEM_LOCKFILE" ] || rm -f $MODEM_LOCKFILE
 
 # Delete Default Route
-/sbin/route del default > /dev/null 2>&1
-
+ip route delete default > /dev/null 2>&1
 
 
 # Run pppd
