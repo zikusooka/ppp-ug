@@ -18,7 +18,7 @@ Pre-requisites:
 
 1) Linux
 
-2) pppd 
+2) pppd, bind-utils(dig/host), modem-manager
 
 3) USB 3g modem e.g. Huawei e173 or e220
 

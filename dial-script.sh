@@ -206,6 +206,8 @@ esac
 #################
 #  MAIN SCRIPT  #
 #################
+# Create PPP log directory
+[ -d `dirname $PPP_LOG_FILE` ] || mkdir -p `dirname $PPP_LOG_FILE`
 
 # Proceed only after device is found
 while [ ! -c /dev/$DEVICE ];
@@ -214,6 +216,7 @@ echo "Waiting for modem to be recognized by system, please wait ..."
 sleep 2
 . $MODEM_ISP_INIT_SCRIPT
 done
+
 
 # Quick Modem information
 # ----------------------- 
@@ -599,7 +602,7 @@ echo "$DATE_TIMESTAMP
 ---" > $DSFLOWRPT_STATS_FILE
 
 # Get connection speed stats
-sudo cat $MODEMCONTROLDEV >> $DSFLOWRPT_STATS_FILE 2>&1 &
+cat $MODEMCONTROLDEV >> $DSFLOWRPT_STATS_FILE 2>&1 &
 sleep 2
 grep DSFLOWRPT $DSFLOWRPT_STATS_FILE > /dev/null 2>&1
 DSFLOWRPT_EXIT=$?
