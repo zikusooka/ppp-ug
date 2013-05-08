@@ -107,7 +107,7 @@ DATE_TIMESTAMP=`date +"%b %d at %I:%M:%S"`
 DSFLOWRPT_STATS_FILE=/var/log/ppp/statistics.log
 DSFLOWRPT_HEX_TMP_FILE=/tmp/dsflowrpt_ppp
 
-
+NM_CLI_CMD=/usr/bin/nmcli
 
 
 
@@ -161,7 +161,12 @@ STATUS=$?
 
 # CLI Calculator
 calc(){ 
-awk "BEGIN{ print $* }" 
+if [ `awk "BEGIN{ print $* }"` != 0 ];
+then
+awk "BEGIN{ print $* }"
+else
+echo Unknown
+fi
 }
 
 
@@ -342,6 +347,27 @@ ps acx | grep pppd > /dev/null || killall -9 pppd > /dev/null 2>&1
 
 # remove MODEM_LOCKFILE
 [ ! -f "$MODEM_LOCKFILE" ] || rm -f $MODEM_LOCKFILE
+
+# Check to see if NetworkManager is running
+ps acx | grep NetworkManager > /dev/null 2>&1
+NM_RUN_STATUS=$?
+# Enable WWAN using nmcli
+if [ "$NM_RUN_STATUS" = "0" ] && [ -e "$NM_CLI_CMD" ];
+then
+# Status of WWAN
+NM_WWAN_STATUS=`$NM_CLI_CMD -t -f WWAN nm wwan`
+# Run actions based on state
+case $NM_WWAN_STATUS in
+disabled)
+echo "Enabling Mobile broadband (WWAN) ..."
+# Turn on WWAN.  Needed for modem to be queried post connection
+$NM_CLI_CMD nm wwan on
+;;
+*)
+echo "Mobile Broadband is already enabled"
+;;
+esac
+fi
 
 # Delete Default Route
 ip route delete default > /dev/null 2>&1
@@ -573,12 +599,12 @@ echo "$DATE_TIMESTAMP
 ---" > $DSFLOWRPT_STATS_FILE
 
 # Get connection speed stats
-cat $MODEMCONTROLDEV >> $DSFLOWRPT_STATS_FILE 2>&1 &
+sudo cat $MODEMCONTROLDEV >> $DSFLOWRPT_STATS_FILE 2>&1 &
 sleep 2
 grep DSFLOWRPT $DSFLOWRPT_STATS_FILE > /dev/null 2>&1
 DSFLOWRPT_EXIT=$?
 STATS_COUNT=1
-while [ "$DSFLOWRPT_EXIT" != "0" ] && [ "$STATS_COUNT" -le "15" ];
+while [ "$DSFLOWRPT_EXIT" != "0" ] && [ "$STATS_COUNT" -le "10" ];
 do
 echo "[$STATS_COUNT] Querying network traffic statistics ...
 "
@@ -586,6 +612,10 @@ sleep 1
 grep DSFLOWRPT $DSFLOWRPT_STATS_FILE > /dev/null 2>&1
 let "STATS_COUNT = $STATS_COUNT + 1"
 done
+
+PID_CAT_MODEM_CONTROL_DEV=`ps auwx | grep "$MODEMCONTROLDEV" | grep cat | awk {'print $2'}`
+# Kill cat process i.e. probing of modem control device
+kill $PID_CAT_MODEM_CONTROL_DEV || kill -9 $PID_CAT_MODEM_CONTROL_DEV
 
 # Generate Hex values file for dsflowrpt parameters
 grep DSFLOWRPT $DSFLOWRPT_STATS_FILE | tail -1 > $DSFLOWRPT_HEX_TMP_FILE
@@ -595,34 +625,39 @@ grep DSFLOWRPT $DSFLOWRPT_STATS_FILE | tail -1 > $DSFLOWRPT_HEX_TMP_FILE
 # -------------------
 # The duration of the connection in seconds
 CURR_DS_TIME_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f1 | cut -d ":" -f2`
-CURR_DS_TIME=`echo "ibase=16;$CURR_DS_TIME_HEX" | bc`
+CURR_DS_TIME=`printf '%d\n' 0x$CURR_DS_TIME_HEX`
+CONNECTION_DURATION=`calc $CURR_DS_TIME*1`
 
 # The transmit (upload) speed in bytes per second (n*8 / 1000 = kbps)
 TX_RATE_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f2`
-TX_RATE=`echo "ibase=16;$TX_RATE_HEX" | bc`
+TX_RATE=`printf '%d\n' 0x$TX_RATE_HEX`
+MEASURED_UPLOAD_SPEED=`calc $TX_RATE*8/1000`
 
 # The receive (download) speed in bytes per second (n*8 / 1000 = kbps)
 RX_RATE_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f3`
-RX_RATE=`echo "ibase=16;$RX_RATE_HEX" | bc`
+RX_RATE=`printf '%d\n' 0x$RX_RATE_HEX`
+MEASURED_DOWNLOAD_SPEED=`calc $RX_RATE*8/1000`
 
 # The total bytes transmitted during this session
 CURR_TX_FLOW_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f4`
-CURR_TX_FLOW=`echo "ibase=16;$CURR_TX_FLOW_HEX" | bc`
+CURR_TX_FLOW=`printf '%d\n' 0x$CURR_TX_FLOW_HEX`
+BYTES_SENT=`calc $CURR_TX_FLOW*1`
 
 # The total bytes received during this session
 CURR_RX_FLOW_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f5`
-CURR_RX_FLOW=`echo "ibase=16;$CURR_RX_FLOW_HEX" | bc`
+CURR_RX_FLOW=`printf '%d\n' 0x$CURR_RX_FLOW_HEX`
+BYTES_RECEIVED=`calc $CURR_RX_FLOW*1`
 
-# PDP connection transmitting rate determined after negotiating with the 
-# network side, unit: Bps.
+# PDP connection transmitting rate determined after negotiating with the# network side, unit: Bps.
 QOS_TX_RATE_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f6`
-QOS_TX_RATE=`echo "ibase=16;$QOS_TX_RATE_HEX" | bc`
+QOS_TX_RATE=`printf '%d\n' 0x$QOS_TX_RATE_HEX`
+MAX_UPLOAD_SPEED=`calc $QOS_TX_RATE*1`
 
 # PDP connection receiving rate determined after negotiating with the 
 # network side, unit: Bps.
 QOS_RX_RATE_HEX=`cat $DSFLOWRPT_HEX_TMP_FILE | cut -d "," -f7`
-QOS_RX_RATE=`echo "ibase=16;$QOS_RX_RATE_HEX" | bc`
-
+QOS_RX_RATE=`printf '%d\n' 0x$QOS_RX_RATE_HEX`
+MAX_DOWNLOAD_SPEED=`calc $QOS_RX_RATE*1`
 
 
 # Print banner
@@ -641,12 +676,13 @@ echo "    ======================================================================
 		PPP Adaptor    	     =  $PPP_INTERFACE
 		Remote MTU	     =  $REMOTE_MTU
 		---------------------------------------------
-		Connection speed details after [$CURR_DS_TIME] Seconds:
+		Connection speed details after [$CONNECTION_DURATION] Seconds:
 		---------------------------------------------
-		TX_RATE		     =	$TX_RATE bps
-		RX_RATE		     =	$RX_RATE bps
-		CURR_TX_FLOW	     =	$CURR_TX_FLOW b
-		CURR_RX_FLOW	     =	$CURR_RX_FLOW b
-		QOS_TX_RATE	     =	$QOS_TX_RATE Bps
-		QOS_RX_RATE	     =	$QOS_RX_RATE Bps
+		Measured Upload Speed (kbps)	=	$MEASURED_UPLOAD_SPEED
+		Measured Download Speed (kbps)	=	$MEASURED_DOWNLOAD_SPEED
+		Data Sent (No.of Bytes)		=	$BYTES_SENT
+		Data Received (No.of Bytes)	=	$BYTES_RECEIVED
+		Maximum Upload Speed (Bps)	=	$MAX_UPLOAD_SPEED
+		Maximum Download Speed (Bps)	=	$MAX_DOWNLOAD_SPEED
+
     ======================================================================="
