@@ -48,8 +48,8 @@ APN="orange.ug"
 USE_PEER_DNS=n  # Important - DNS for orange not allocated properly!
 DNS1=41.202.229.144
 DNS2=41.202.229.140
-MRU_SIZE=1452
-MTU_SIZE=1452
+MRU_SIZE=1232
+MTU_SIZE=1232
 ;;
 # MTN
 [Mm][Tt][Nn])
@@ -174,7 +174,7 @@ fi
 . $MODEM_ISP_INIT_SCRIPT
 
 # Source modem device
-MODEM_LOCKFILE=/var/lock/LCK..$DEVICE
+MODEM_LOCKFILE=/var/lock/LCK..$DEVICE_NODE*
 
 
 # Network Type/Band Selection
@@ -208,14 +208,6 @@ esac
 #################
 # Create PPP log directory
 [ -d `dirname $PPP_LOG_FILE` ] || mkdir -p `dirname $PPP_LOG_FILE`
-
-# Proceed only after device is found
-while [ ! -c /dev/$DEVICE ];
-do
-echo "Waiting for modem to be recognized by system, please wait ..."
-sleep 2
-. $MODEM_ISP_INIT_SCRIPT
-done
 
 
 # Quick Modem information
@@ -373,7 +365,7 @@ esac
 fi
 
 # Delete Default Route
-ip route delete default > /dev/null 2>&1
+/usr/sbin/ip route del default > /dev/null 2>&1
 
 
 # Run pppd
@@ -498,7 +490,8 @@ REMOTE_CHAP_SERVER=`cat $PPP_LOG_FILE | grep 'CHAP Challenge' | tail -n 1 | cut 
 LOCAL_IP_ADDRESS=`cat $PPP_LOG_FILE | grep 'local  IP address' | tail -n 1 | awk {'print $4'}`
 REMOTE_IP_ADDRESS=`cat $PPP_LOG_FILE | grep 'remote IP address' | tail -n 1 | awk {'print $4'}`
 PPP_INTERFACE=`grep Connect: $PPP_LOG_FILE  | tail -1 | cut -d : -f2 | awk {'print $1'}`
-REMOTE_MTU=`ifconfig | grep $PPP_INTERFACE | grep -i MTU | awk {'print $4'}`
+REMOTE_MTU=`/usr/sbin/ip link show $PPP_INTERFACE | awk {'print $5'}`
+
 
 # Query Service mode i.e. connection type
 case $SERVICE_MODE in
@@ -689,3 +682,5 @@ echo "    ======================================================================
 		Maximum Download Speed (Bps)	=	$MAX_DOWNLOAD_SPEED
 
     ======================================================================="
+# Exit script
+exit 0
