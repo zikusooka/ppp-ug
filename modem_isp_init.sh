@@ -86,11 +86,6 @@ query_modem_firmware_vers () {
 $CHAT_CMD -EVv "" "AT+CGMR" "OK" "" > $MODEMDEV < $MODEMDEV
 }
 
-# Query for SIM IMSI Number
-query_sim_imsi () {
-$CHAT_CMD -EVv "" "AT+CIMI" "OK" "" > $MODEMDEV < $MODEMDEV
-}
-
 # Query for device EMEI Number
 query_modem_emei () {
 $CHAT_CMD -EVv "" "AT+CGSN" "OK" "" > $MODEMDEV < $MODEMDEV
@@ -99,6 +94,12 @@ $CHAT_CMD -EVv "" "AT+CGSN" "OK" "" > $MODEMDEV < $MODEMDEV
 # Query for device Serial Number
 query_modem_serial () {
 $CHAT_CMD -EVv "" "AT+CGSN" "OK" "" > $MODEMDEV < $MODEMDEV
+}
+
+# Query for SIM IMSI Number
+query_sim_imsi () {
+$CHAT_CMD -t 1 -EVv "" "AT+CIMI" "OK" "" > $MODEMDEV < $MODEMDEV
+SIM_STATUS=$?
 }
 
 # Query for Card Lock Statis
