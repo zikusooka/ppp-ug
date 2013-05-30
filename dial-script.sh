@@ -257,18 +257,27 @@ The firmware version of the modem is
 query_modem_firmware_vers
 
 
-# IMSI Number of SIM
-echo "
-The SIM IMSI number is
-----------------------"
-query_sim_imsi
-
-
 # EMEI Number of modem
 echo "
 The EMEI number of the modem is
 -------------------------------"
 query_modem_emei
+
+
+# IMSI Number of SIM
+query_sim_imsi
+if [ "$SIM_STATUS" = "0" ]; 
+then
+echo "
+The SIM IMSI number is
+----------------------"
+query_sim_imsi
+else
+clear
+echo "SIM Access Error: This SIM card is not registered. Please contact:
+Customer Support Center for $ISP" 
+exit 1
+fi
 
 
 # Lock status of modem
