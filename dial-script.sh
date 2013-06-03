@@ -274,7 +274,7 @@ The SIM IMSI number is
 query_sim_imsi
 else
 clear
-echo "SIM Access Error: This SIM card is not registered. Please contact:
+echo "SIM Access Error: Connection has either already been made or there is a problem with your SIM card. For the latter, please contact the:
 Customer Support Center for $ISP" 
 exit 1
 fi
@@ -448,7 +448,7 @@ PPP_ERROR_MSG="Callback  was  negotiated  and  an  incoming  call should arrive 
 PPP_ERROR_MSG="The link was terminated because the peer is not  responding to echo requests."
 ;;
 16)     
-PPP_ERROR_MSG="The link was terminated by the modem hanging up."
+PPP_ERROR_MSG="The link was terminated by the modem hanging up. Possible causes: Invalid SIM card"
 ;;
 17)
 PPP_ERROR_MSG="The PPP negotiation failed because serial loopback was detected."
