@@ -274,8 +274,11 @@ The SIM IMSI number is
 query_sim_imsi
 else
 clear
-echo "SIM Access Error: Connection has either already been made or there is a problem with your SIM card. For the latter, please contact the:
-Customer Support Center for $ISP" 
+echo "SIM Access Error: Possible reasons include:
+a) SIM card is not properly inserted in modem
+b) A connection to the Internet has already been made 
+c) There is a problem with your SIM card. If so, please contact the:
+   Customer Support Center for $ISP" 
 exit 1
 fi
 
