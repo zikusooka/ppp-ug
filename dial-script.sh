@@ -108,7 +108,7 @@ DSFLOWRPT_STATS_FILE=/var/log/ppp/statistics.log
 DSFLOWRPT_HEX_TMP_FILE=/tmp/dsflowrpt_ppp
 
 NM_CLI_CMD=/usr/bin/nmcli
-
+NM_CLI_VERS=`$NM_CLI_CMD -version | sed 's|nmcli tool, version ||' |cut -d . -f1,2,3,4`
 
 
 
@@ -362,8 +362,15 @@ NM_RUN_STATUS=$?
 if [ "$NM_RUN_STATUS" = "0" ] && [ -e "$NM_CLI_CMD" ];
 then
 # Status of WWAN
-#NM_WWAN_STATUS=`$NM_CLI_CMD -t -f WWAN nm wwan` # < 0.9.9.0-46.git20131003
-NM_WWAN_STATUS=`$NM_CLI_CMD -t -f wwan radio`# => 0.9.9.0-46.git20131003
+# --------------
+# NMCLI command changed options at version 0.9.9.0
+if [ $(echo "$NM_CLI_VERS 0.9.9.0" | awk '{ printf "%f", $1 < $2 }') == "0.000000" ];
+then
+NM_WWAN_STATUS=`$NM_CLI_CMD -t -f wwan radio`
+else
+NM_WWAN_STATUS=`$NM_CLI_CMD -t -f WWAN nm wwan` 
+fi
+#
 # Run actions based on state
 case $NM_WWAN_STATUS in
 disabled)
