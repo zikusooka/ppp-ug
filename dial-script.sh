@@ -362,13 +362,15 @@ NM_RUN_STATUS=$?
 if [ "$NM_RUN_STATUS" = "0" ] && [ -e "$NM_CLI_CMD" ];
 then
 # Status of WWAN
-NM_WWAN_STATUS=`$NM_CLI_CMD -t -f WWAN nm wwan`
+#NM_WWAN_STATUS=`$NM_CLI_CMD -t -f WWAN nm wwan` # < 0.9.9.0-46.git20131003
+NM_WWAN_STATUS=`$NM_CLI_CMD -t -f wwan radio`# => 0.9.9.0-46.git20131003
 # Run actions based on state
 case $NM_WWAN_STATUS in
 disabled)
 echo "Enabling Mobile broadband (WWAN) ..."
 # Turn on WWAN.  Needed for modem to be queried post connection
-$NM_CLI_CMD nm wwan on
+#$NM_CLI_CMD nm wwan on # < 0.9.9.0-46.git20131003
+$NM_CLI_CMD radio wwan on # => 0.9.9.0-46.git20131003
 ;;
 *)
 echo "Mobile Broadband is already enabled"
