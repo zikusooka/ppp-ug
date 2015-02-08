@@ -48,6 +48,8 @@ APN="orange.ug"
 USE_PEER_DNS=n  # Important - DNS for orange not allocated properly!
 DNS1=41.202.229.144
 DNS2=41.202.229.140
+DNS3=197.157.8.2
+DNS4=197.157.8.3
 MRU_SIZE=576
 MTU_SIZE=576
 ;;
@@ -62,10 +64,10 @@ MTU_SIZE=576
 ;;
 # Airtel
 [Aa][Ii][Rr][Tt][Ee][Ll])
-APN="celtel.co.ug"
-USE_PEER_DNS=y
-DNS1=217.113.72.20 # Verify with ISP
-DNS2=217.113.72.21 # Verify with ISP
+APN="web.ug.airtel.com"
+USE_PEER_DNS=n
+DNS1=197.239.0.249 
+DNS2=197.239.0.250
 MRU_SIZE=576 
 MTU_SIZE=576
 ;;
