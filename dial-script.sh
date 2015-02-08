@@ -1,9 +1,9 @@
 #!/bin/sh
-# This script will dial a Ugandan ISP and provide you with its network details
+# This script uses a 3g modem (dongle) to dial a Ugandan ISP and provide you with its network details
 # You need the following scripts also
 # chat-script.sh     modem_isp_init.sh
 #
-# Copyright (C) 2012 Joseph Zikusooka.
+# Copyright (C) 2015-2016 Joseph Zikusooka.
 #
 # Contact me at: joseph AT zikusooka.com
 
@@ -48,8 +48,8 @@ APN="orange.ug"
 USE_PEER_DNS=n  # Important - DNS for orange not allocated properly!
 DNS1=41.202.229.144
 DNS2=41.202.229.140
-MRU_SIZE=1232
-MTU_SIZE=1232
+MRU_SIZE=576
+MTU_SIZE=576
 ;;
 # MTN
 [Mm][Tt][Nn])
