@@ -55,7 +55,7 @@ MTU_SIZE=576
 ;;
 # MTN
 [Mm][Tt][Nn])
-APN="Internet"
+APN="internet"
 USE_PEER_DNS=y
 DNS1=212.88.97.20
 DNS2=193.108.214.50
@@ -68,15 +68,6 @@ APN="web.ug.airtel.com"
 USE_PEER_DNS=n
 DNS1=197.239.0.249 
 DNS2=197.239.0.250
-MRU_SIZE=576 
-MTU_SIZE=576
-;;
-# Warid
-[Ww][Aa][Rr][Ii][Dd])
-APN="Warid"
-USE_PEER_DNS=y
-DNS1=41.221.87.2
-DNS2=41.221.81.132
 MRU_SIZE=576 
 MTU_SIZE=576
 ;;
@@ -124,7 +115,7 @@ Example:./`basename $0` UTL irene@3g secret 1
 
 ISP Names
 --------- 
-UTL ORANGE MTN AIRTEL WARID
+UTL ORANGE MTN AIRTEL
 
 Network Types
 -------------
