@@ -66,7 +66,7 @@ DNS2=197.239.0.250
 # Smart
 [Ss][Mm][Ar][Tt])
 APN="smart.ug"
-USE_PEER_DNS=y
+USE_PEER_DNS=n
 DNS1=41.191.76.70
 DNS2=8.8.8.8
 ;;
