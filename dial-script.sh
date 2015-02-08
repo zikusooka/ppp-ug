@@ -256,6 +256,11 @@ The EMEI number of the modem is
 -------------------------------"
 query_modem_emei
 
+# Serial Number of modem
+echo "
+The Serial number of the modem is
+-------------------------------"
+query_modem_serial
 
 # IMSI Number of SIM
 query_sim_imsi
