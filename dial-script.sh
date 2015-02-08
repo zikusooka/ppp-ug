@@ -103,6 +103,8 @@ DSFLOWRPT_HEX_TMP_FILE=/tmp/dsflowrpt_ppp
 NM_CLI_CMD=/usr/bin/nmcli
 NM_CLI_VERS=`$NM_CLI_CMD -version | sed 's|nmcli tool, version ||' |cut -d . -f1,2,3,4`
 
+GATEWAY_ACCESS=0
+
 
 
 ###############
@@ -610,6 +612,19 @@ done
 
 # CONNECTED
 # ---------
+if [ "$GATEWAY_ACCESS" = "1" ];
+then
+# Allow this box to act as gateway
+echo "`date +"%b %d at %I:%M:%S"`
+---
+Setting this box as the default Internet gateway
+"
+/bin/echo 1 > /proc/sys/net/ipv4/ip_forward
+systemctl restart iptables.service
+$IPTABLES -F
+$IPTABLES -t nat -A POSTROUTING -o $PPP_INTERFACE -j MASQUERADE
+fi
+
 # QUERY Modem when in On-Line state
 # ---------------------------------
 # Remove stats file if it exists, by creating new file with time stamp
