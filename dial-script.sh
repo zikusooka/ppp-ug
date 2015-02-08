@@ -55,7 +55,7 @@ MTU_SIZE=576
 ;;
 # MTN
 [Mm][Tt][Nn])
-APN="yelloaccess.co.ug"
+APN="Internet"
 USE_PEER_DNS=y
 DNS1=212.88.97.20
 DNS2=193.108.214.50
