@@ -39,8 +39,8 @@ APN=UTBROADBAND
 USE_PEER_DNS=y
 DNS1=81.199.21.94
 DNS2=81.199.31.33
-MRU_SIZE=576 
-MTU_SIZE=576 
+MRU_SIZE=576
+MTU_SIZE=576
 ;;
 # Orange
 [Oo][Rr][Aa][Nn][Gg][Ee])
@@ -59,16 +59,16 @@ APN="internet"
 USE_PEER_DNS=y
 DNS1=212.88.97.20
 DNS2=193.108.214.50
-MRU_SIZE=576 
-MTU_SIZE=576 
+MRU_SIZE=576
+MTU_SIZE=576
 ;;
 # Airtel
 [Aa][Ii][Rr][Tt][Ee][Ll])
 APN="web.ug.airtel.com"
 USE_PEER_DNS=n
-DNS1=197.239.0.249 
+DNS1=197.239.0.249
 DNS2=197.239.0.250
-MRU_SIZE=576 
+MRU_SIZE=576
 MTU_SIZE=576
 ;;
 esac
@@ -374,7 +374,7 @@ case $NM_WWAN_STATUS in
 disabled)
 echo "Enabling Mobile broadband (WWAN) ..."
 # Turn on WWAN.  Needed for modem to be queried post connection
-#$NM_CLI_CMD nm wwan on # < 0.9.9.0-46.git20131003
+# $NM_CLI_CMD nm wwan on # < 0.9.9.0-46.git20131003
 $NM_CLI_CMD radio wwan on # => 0.9.9.0-46.git20131003
 ;;
 *)
@@ -382,6 +382,7 @@ echo "Mobile Broadband is already enabled"
 ;;
 esac
 fi
+
 
 # Delete Default Route
 /usr/sbin/ip route del default > /dev/null 2>&1
@@ -396,7 +397,9 @@ then
 	asyncmap a0000 defaultroute usepeerdns $MODEMDEV $SPEED \
 	noipdefault noauth user $ACCOUNT password $PASSWORD \
 	$LOCAL_IP:$REMOTE_IP connect $DIALER_SCRIPT
+
 else
+
 /usr/sbin/pppd debug logfile $PPP_LOG_FILE lock modem crtscts \
 	mru $MRU_SIZE mtu $MTU_SIZE updetach nomagic \
 	asyncmap a0000 defaultroute $MODEMDEV $SPEED \
@@ -458,7 +461,8 @@ PPP_ERROR_MSG="Callback  was  negotiated  and  an  incoming  call should arrive 
 PPP_ERROR_MSG="The link was terminated because the peer is not  responding to echo requests."
 ;;
 16)     
-PPP_ERROR_MSG="The link was terminated by the modem hanging up. Possible causes: Invalid SIM card"
+PPP_ERROR_MSG="The link was terminated by the modem hanging up. Possible causes: Invalid 
+SIM card"
 ;;
 17)
 PPP_ERROR_MSG="The PPP negotiation failed because serial loopback was detected."
@@ -478,7 +482,7 @@ esac
 
 # DNS Settings
 # ------------
-# Add DNS entries for ISPs like orange that may not do so
+# Add DNS entries for ISPs like orange, airtel that may not do so
 if [ "$USE_PEER_DNS" = "n" ];
 then
 echo "# $ISP DNS Settings
@@ -606,7 +610,6 @@ done
 
 # CONNECTED
 # ---------
-
 # QUERY Modem when in On-Line state
 # ---------------------------------
 # Remove stats file if it exists, by creating new file with time stamp
