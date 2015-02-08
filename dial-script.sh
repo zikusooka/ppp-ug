@@ -39,8 +39,6 @@ APN=UTBROADBAND
 USE_PEER_DNS=y
 DNS1=81.199.21.94
 DNS2=81.199.31.33
-MRU_SIZE=576
-MTU_SIZE=576
 ;;
 # Orange
 [Oo][Rr][Aa][Nn][Gg][Ee])
@@ -50,8 +48,6 @@ DNS1=41.202.229.144
 DNS2=41.202.229.140
 DNS3=197.157.8.2
 DNS4=197.157.8.3
-MRU_SIZE=576
-MTU_SIZE=576
 ;;
 # MTN
 [Mm][Tt][Nn])
@@ -59,8 +55,6 @@ APN="internet"
 USE_PEER_DNS=y
 DNS1=212.88.97.20
 DNS2=193.108.214.50
-MRU_SIZE=576
-MTU_SIZE=576
 ;;
 # Airtel
 [Aa][Ii][Rr][Tt][Ee][Ll])
@@ -68,8 +62,6 @@ APN="web.ug.airtel.com"
 USE_PEER_DNS=n
 DNS1=197.239.0.249
 DNS2=197.239.0.250
-MRU_SIZE=576
-MTU_SIZE=576
 ;;
 esac
 
@@ -394,16 +386,14 @@ fi
 # --------
 if [ "$USE_PEER_DNS" = "y" ];
 then
-/usr/sbin/pppd debug logfile $PPP_LOG_FILE lock modem crtscts \
-	mru $MRU_SIZE mtu $MTU_SIZE updetach nomagic \
+/usr/sbin/pppd debug logfile $PPP_LOG_FILE lock modem crtscts updetach nomagic \
 	asyncmap a0000 defaultroute usepeerdns $MODEMDEV $SPEED \
 	noipdefault noauth user $ACCOUNT password $PASSWORD \
 	$LOCAL_IP:$REMOTE_IP connect $DIALER_SCRIPT
 
 else
 
-/usr/sbin/pppd debug logfile $PPP_LOG_FILE lock modem crtscts \
-	mru $MRU_SIZE mtu $MTU_SIZE updetach nomagic \
+/usr/sbin/pppd debug logfile $PPP_LOG_FILE lock modem crtscts updetach nomagic \
 	asyncmap a0000 defaultroute $MODEMDEV $SPEED \
 	noipdefault noauth user $ACCOUNT password $PASSWORD \
 	$LOCAL_IP:$REMOTE_IP connect $DIALER_SCRIPT
