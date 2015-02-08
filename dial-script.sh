@@ -278,10 +278,15 @@ query_sim_imsi
 else
 clear
 echo "SIM Access Error: Possible reasons include:
+
 a) SIM card is not properly inserted in modem
 b) A connection to the Internet has already been made 
 c) There is a problem with your SIM card. If so, please contact the:
-   Customer Support Center for $ISP" 
+   Customer Support Center for $ISP
+
+NOTE: If you are sure none of the above apply, then:
+Unplug modem from your PC and re-insert it
+" 
 exit 1
 fi
 
