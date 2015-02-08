@@ -63,6 +63,13 @@ USE_PEER_DNS=n
 DNS1=197.239.0.249
 DNS2=197.239.0.250
 ;;
+# Smart
+[Ss][Mm][Ar][Tt])
+APN="smart.ug"
+USE_PEER_DNS=y
+DNS1=41.191.76.70
+DNS2=8.8.8.8
+;;
 esac
 
 
@@ -105,12 +112,16 @@ GATEWAY_ACCESS=0
 
 command_usage(){
 echo "Usage:  ./`basename $0` [ISP_NAME] [USERNAME] [PASSWORD] [NETWORK_TYPE]
-Example:./`basename $0` UTL irene@3g secret 1
+Example:./`basename $0` ORANGE username password 1
 
 ISP Names
 --------- 
-UTL ORANGE MTN AIRTEL
+UTL ORANGE MTN AIRTEL SMART
 
+Username/Password
+-----------------
+These don't matter for most providers. So use 'username password'
+ 
 Network Types
 -------------
 1 - 3G/WCDMA Only
