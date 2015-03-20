@@ -3,6 +3,9 @@
 
 # Variables
 #----------
+IMSI_TMP_FILE=/tmp/ppp_imsi.raw
+SIM_MCC_CODE=641 # Uganda
+#
 CHAT_CMD=/usr/sbin/chat
 # Modem device settings
 DEVICE_NODE=ttyUSB
@@ -100,6 +103,12 @@ $CHAT_CMD -EVv "" "AT+CGSN" "OK" "" > $MODEMDEV < $MODEMDEV
 query_sim_imsi () {
 $CHAT_CMD -t 1 -EVv "" "AT+CIMI" "OK" "" > $MODEMDEV < $MODEMDEV
 SIM_STATUS=$?
+}
+
+# Query IMSI/MNC codes - Put after query_sim_imsi function
+query_mnc_code () {
+query_sim_imsi > $IMSI_TMP_FILE 2>&1
+MNC_CODE=$(grep $SIM_MCC_CODE $IMSI_TMP_FILE | tail -c 13 | head -c 2)
 }
 
 # Query for Card Lock Statis
