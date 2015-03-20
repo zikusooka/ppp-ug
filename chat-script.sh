@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec /usr/sbin/chat -EVv -r /tmp/ppp.log		\
+exec /usr/sbin/chat -EVv				\
 	ECHO 	OFF					\
 	REPORT 	CONNECT					\
 	ABORT	"\nBUSY\r"				\
@@ -10,13 +10,13 @@ exec /usr/sbin/chat -EVv -r /tmp/ppp.log		\
 	""      "ATE1"					\
 	SAY 	"Setting the network mode parameters"	\
 	SAY 	"-----------------------------------"	\
-	"" 	"AT\^SYSCFG=$NETWORK_TYPE_BAND"		\
+	OK 	"AT\^SYSCFG=$NETWORK_TYPE_BAND"		\
 	SAY 	"-----------------------------------"	\
 	SAY 	"Setting the network id String"		\
 	SAY 	"-----------------------------------"	\
 	SAY 	"Setting the APN ID"			\
 	SAY 	"-----------------------------------"	\
-	OK	"AT+CGDCONT=1,\"IP\",\"$APN\",,0,0"	\
+	OK	"AT+CGDCONT=1,\"IP\",\"$APN\""		\
 	SAY 	"The Signal Strength of this Link is:\n"\
 	SAY 	"-----------------------------------"	\
 	""      "AT+CSQ"				\

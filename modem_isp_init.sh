@@ -107,7 +107,7 @@ query_modem_lock () {
 $CHAT_CMD -EVv "" "AT\^CARDLOCK?" "OK" "" > $MODEMDEV < $MODEMDEV
 # 1- Locked
 # 2- Unlocked
-# 3- Unlocked foorever
+# 3- Unlocked forever
 }
 
 # Query for available APNs
