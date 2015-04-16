@@ -52,9 +52,9 @@ DNS4=197.157.8.3
 # MTN
 [Mm][Tt][Nn])
 APN="internet"
-USE_PEER_DNS=y
-DNS1=212.88.97.20
-DNS2=193.108.214.50
+USE_PEER_DNS=n # Important - DNS for MTN not allocated properly!
+DNS1=193.108.252.51
+DNS2=41.210.130.122
 ;;
 # Airtel
 [Aa][Ii][Rr][Tt][Ee][Ll])
