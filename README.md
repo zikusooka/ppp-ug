@@ -9,7 +9,7 @@
 Introduction:
 
 PPP-UG is a command line utility that can be used to connect to the
-Internet via mobile ISPs based in Uganda.  Tested networks include: Orange/Africell, Airtel, Smart and UTL.  Other networks like MTN, Warid, and Airtel should also work with little or no modifications.
+Internet via mobile ISPs based in Uganda.  Tested networks include: Africell, MTN, Airtel, Smart, Vodafone and UTL.  Other networks like Smile should also work with little or no modifications.
 
 PPP-UG is a collection of bash scripts which primarily take advantage of the linux program pppd and chat to dial the ISP.
 
@@ -20,7 +20,7 @@ Pre-requisites:
 
 2) pppd, bind-utils(dig/host), modem-manager
 
-3) USB 3g modem e.g. Huawei e173, e3131, e160 or e220
+3) USB 3G or 4G modem e.g. Huawei e173, e3131, e160 or e220
 
 4) Modem should be detected by linux i.e. usb_modeswitch
 
@@ -39,7 +39,7 @@ sudo HOME/dial-script ORANGE username password 1
 
 ISP Names
 --------- 
-UTL ORANGE MTN AIRTEL SMART
+UTL ORANGE MTN AIRTEL SMART VODAFONE
 
 Username/Password
 -----------------
