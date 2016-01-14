@@ -70,6 +70,20 @@ USE_PEER_DNS=n
 DNS1=154.70.157.36
 DNS2=8.8.8.8
 ;;
+# Vodafone
+[][Vv][Oo][Dd][Aa][Ff][Oo][Nn][Ee]) 
+APN="internet"
+USE_PEER_DNS=n
+DNS1=154.73.12.28
+DNS2=154.73.12.28
+;;
+# Smile
+[Ss][Mm][Ii][Ll][Ee])
+APN="smile"
+USE_PEER_DNS=n
+DNS1=41.138.213.40
+DNS2=8.8.8.8
+;;
 esac
 
 
@@ -116,7 +130,7 @@ Example:./`basename $0` ORANGE username password 1
 
 ISP Names
 --------- 
-UTL ORANGE MTN AIRTEL SMART
+UTL ORANGE MTN AIRTEL SMART VODAFONE
 
 Username/Password
 -----------------
@@ -297,6 +311,11 @@ The Lock status of the modem is
 -------------------------------"
 query_modem_lock 
 
+echo "
+1 = Locked
+2 = Unlocked
+3 = Unlocked forever
+"
 
 # Available APNs
 echo "
@@ -630,6 +649,9 @@ systemctl restart iptables.service
 $IPTABLES -F
 $IPTABLES -t nat -A POSTROUTING -o $PPP_INTERFACE -j MASQUERADE
 fi
+
+# Connection succeeded - alert
+beep -f 500 -l 155 -n -f 400 -l 155 -n -f 600 -l 155 -n -f 800 -l 155 -n -f 800 -l 1
 
 # QUERY Modem when in On-Line state
 # ---------------------------------
